@@ -1,17 +1,21 @@
 package com.example.documentsapi.ui.main;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.documentsapi.R;
 import com.example.documentsapi.model.Repository;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -35,10 +39,21 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull RepositoryAdapter.ViewHolder holder, int position) {
-        Repository repo = repos.get(position);
-        if (repo != null) {
-            holder.tvName.setText(repo.full_name);
-            holder.tvDescription.setText(repo.description);
+        Repository repository = repos.get(position);
+        if (repository != null) {
+            holder.tvName.setText(repository.full_name);
+            holder.tvDescription.setText(repository.description);
+            Picasso.get().load(repository.owner.avatar_url).into(holder.imgUser);
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "><><><><", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, DetailActivity.class);
+                    intent.putExtra("repository",  repository);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 
