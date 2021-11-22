@@ -20,6 +20,7 @@ public class DetailActivity extends AppCompatActivity {
     TextView txtName;
     TextView txtDescription;
     ImageView imgLogo;
+    Repository repository;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -34,13 +35,14 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DetailActivity.this, ProfileActivity.class);
+                intent.putExtra("repository", repository);
                 startActivity(intent);
             }
         });
 
         Bundle bundle = getIntent().getExtras();
         Intent intent = getIntent();
-        Repository repository = (Repository) bundle.getSerializable("repository");
+        repository = (Repository) bundle.getSerializable("repository");
 //        Repository repository = bundle.getParcelable("repo");
 //        repository = bundle.getParcelable("full_name");
 //        repository = bundle.getParcelable("description");
