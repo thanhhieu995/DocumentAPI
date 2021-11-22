@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.documentsapi.R;
 import com.example.documentsapi.api.GitHubService;
@@ -25,6 +26,7 @@ import retrofit2.Response;
 public class ProfileActivity extends AppCompatActivity {
 
     ImageView imgLogo;
+    TextView tvName;
     RecyclerView recyclerView;
     RepositoryAdapter repositoryAdapter;
     List<Repository> repositories;
@@ -35,6 +37,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         imgLogo = findViewById(R.id.imgLogo);
+        tvName = findViewById(R.id.profile_tvName);
         recyclerView = findViewById(R.id.rv_recyclerView_Profile);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         repositoryAdapter = new RepositoryAdapter(repositories, this);
@@ -43,6 +46,7 @@ public class ProfileActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         Repository repository = (Repository) bundle.getSerializable("repository");
         Picasso.get().load(repository.owner.avatar_url).into(imgLogo);
+        tvName.setText(repository.owner.login);
 
         callRepositoryAPI(repository.owner.login);
     }

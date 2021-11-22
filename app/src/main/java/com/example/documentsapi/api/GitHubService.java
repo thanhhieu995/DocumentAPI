@@ -19,4 +19,7 @@ public interface GitHubService {
 
     @GET("orgs/{username}/repos")
     Call<List<Repository>> listUserRepos(@Path("username") String username);
+
+    @GET("repos/{username}/hello-world/issues")
+    Call<List<Repository>> listIssues(@Path("username") String username);
 }

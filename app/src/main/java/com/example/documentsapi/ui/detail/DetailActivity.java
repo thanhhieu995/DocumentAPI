@@ -1,6 +1,8 @@
 package com.example.documentsapi.ui.detail;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -12,8 +14,11 @@ import android.widget.TextView;
 
 import com.example.documentsapi.R;
 import com.example.documentsapi.model.Repository;
+import com.example.documentsapi.ui.main.RepositoryAdapter;
 import com.example.documentsapi.ui.profile.ProfileActivity;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -21,6 +26,9 @@ public class DetailActivity extends AppCompatActivity {
     TextView txtDescription;
     ImageView imgLogo;
     Repository repository;
+    RecyclerView recyclerView;
+    RepositoryAdapter repositoryAdapter;
+    List<Repository> repositories;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -41,17 +49,17 @@ public class DetailActivity extends AppCompatActivity {
         });
 
         Bundle bundle = getIntent().getExtras();
-        Intent intent = getIntent();
-        repository = (Repository) bundle.getSerializable("repository");
-//        Repository repository = bundle.getParcelable("repo");
-//        repository = bundle.getParcelable("full_name");
-//        repository = bundle.getParcelable("description");
-//        repository = bundle.getParcelable("avatar_url");
+        repository = (Repository) bundle.getSerializable("repositories");
+
         txtName.setText(repository.full_name);
         txtDescription.setText(repository.description);
         Picasso.get().load(repository.owner.avatar_url).into(imgLogo);
-//        txtName = bundle.getParcelable("full_name");
-//        txtDescription = bundle.getParcelable("description");
-//        imgLogo = bundle.getParcelable("avatar_url");
+
+
+        recyclerView = findViewById(R.id.detail_rvListIssues);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        repositoryAdapter = new RepositoryAdapter(repositories, this);
+        recyclerView.setAdapter(repositoryAdapter);
     }
+    
 }
