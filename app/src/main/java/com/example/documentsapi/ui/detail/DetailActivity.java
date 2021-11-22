@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.documentsapi.R;
 import com.example.documentsapi.api.GitHubService;
@@ -67,7 +68,7 @@ public class DetailActivity extends AppCompatActivity {
         repositoryAdapter = new RepositoryAdapter(repositories, this);
         recyclerView.setAdapter(repositoryAdapter);
 
-        callRepositoryAPI(repository.owner.login, repository.owner.title);
+        callRepositoryAPI(repository.owner.login, repository.name);
     }
 
     private void callRepositoryAPI(String name, String reponame) {
@@ -77,7 +78,10 @@ public class DetailActivity extends AppCompatActivity {
         repos.enqueue(new Callback<List<Repository>>() {
             @Override
             public void onResponse(Call<List<Repository>> call, Response<List<Repository>> response) {
-                repositoryAdapter.setRepos(response.body());
+                if (response.body() != null) {
+                    repositoryAdapter.setRepos(response.body());
+                    repositories = response.body();
+                }
             }
 
             @Override

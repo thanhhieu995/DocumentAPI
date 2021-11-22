@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                intent.putExtra("repositories", (Parcelable) repositories);
+                intent.putExtra("repository", (Parcelable) repository);
                 startActivity(intent);
             }
         });
