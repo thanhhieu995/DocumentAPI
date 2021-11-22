@@ -44,19 +44,28 @@ public class SearchActivity extends AppCompatActivity {
 
         searchView = findViewById(R.id.searchView);
         recyclerView = findViewById(R.id.rv_recylerView_Search);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         repoAdapter = new RepositoryAdapter(repositories, this);
         recyclerView.setAdapter(repoAdapter);
 
-        callRepositoryApi();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                callRepositoryApi(query);
+                return false;
+            }
 
-//        Intent intent = getIntent();
-//        repositories = intent.getParcelableExtra("repositories");
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
     }
 
 
-    private void callRepositoryApi() {
+    private void callRepositoryApi(String keyword) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.github.com/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -64,7 +73,7 @@ public class SearchActivity extends AppCompatActivity {
 
         GitHubService service = retrofit.create(GitHubService.class);
 
-        Call<SearchResponse> repos = service.searchRepository("acb");
+        Call<SearchResponse> repos = service.searchRepository(keyword);
 
         repos.enqueue(new Callback<SearchResponse>() {
             @Override
@@ -80,54 +89,5 @@ public class SearchActivity extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                filter(newText);
-                return false;
-            }
-        });
-
-    }
-
-//    public boolean onCreateOptionsMenu (Menu menu) {
-//        MenuInflater menuInflater = getMenuInflater();
-//        menuInflater.inflate(R.menu.search_menu, menu);
-//        MenuItem searchItem = menu.findItem(R.id.actionSearch);
-//        SearchView searchView = (SearchView) searchItem.getActionView();
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                filter(newText);
-//                return false;
-//            }
-//        });
-//        return true;
-//    }
-//
-    private void filter(String newText) {
-        ArrayList<Repository> filteredList = new ArrayList<>();
-        if (repositories != null) {
-            for (Repository repository : repositories) {
-                if (repository.full_name.toLowerCase(Locale.ROOT).contains(newText.toLowerCase(Locale.ROOT))) {
-                    filteredList.add(repository);
-                }
-            }
-        }
-        if (filteredList.isEmpty()) {
-            Toast.makeText(this, "NO Data Found...", Toast.LENGTH_SHORT).show();
-        } else {
-            repoAdapter.filterList(filteredList);
-        }
     }
 }
