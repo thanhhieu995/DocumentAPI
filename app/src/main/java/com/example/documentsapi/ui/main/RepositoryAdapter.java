@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.documentsapi.R;
 import com.example.documentsapi.model.Repository;
 import com.example.documentsapi.ui.detail.DetailActivity;
+import com.example.documentsapi.ui.profile.ProfileActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
