@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.documentsapi.R;
 import com.example.documentsapi.api.GitHubService;
+import com.example.documentsapi.api.RetrofitClient;
 import com.example.documentsapi.model.Repository;
 import com.example.documentsapi.model.SearchResponse;
 import com.example.documentsapi.ui.main.RepositoryAdapter;
@@ -65,12 +66,7 @@ public class SearchActivity extends AppCompatActivity {
 
 
     private void callRepositoryApi(String keyword) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.github.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        GitHubService service = retrofit.create(GitHubService.class);
+        GitHubService service = RetrofitClient.getClient().create(GitHubService.class);
 
         Call<SearchResponse> repos = service.searchRepository(keyword);
 
