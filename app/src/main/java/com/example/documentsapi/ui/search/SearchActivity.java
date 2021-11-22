@@ -1,6 +1,8 @@
 package com.example.documentsapi.ui.search;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.util.Log;
@@ -33,6 +35,7 @@ public class SearchActivity extends AppCompatActivity {
     RepositoryAdapter repoAdapter;
     List<Repository> repositories;
     SearchView searchView;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,10 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         searchView = findViewById(R.id.searchView);
+        recyclerView = findViewById(R.id.rv_recylerView_Search);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        repoAdapter = new RepositoryAdapter(repositories, this);
+        recyclerView.setAdapter(repoAdapter);
 
         callRepositoryApi();
 
