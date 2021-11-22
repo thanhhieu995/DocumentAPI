@@ -33,7 +33,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SearchActivity extends AppCompatActivity {
 
     RepositoryAdapter repoAdapter;
-    List<Repository> repositories;
     SearchView searchView;
     RecyclerView recyclerView;
 
@@ -46,7 +45,7 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rv_recylerView_Search);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        repoAdapter = new RepositoryAdapter(repositories, this);
+        repoAdapter = new RepositoryAdapter(null, this);
         recyclerView.setAdapter(repoAdapter);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -80,7 +79,6 @@ public class SearchActivity extends AppCompatActivity {
             public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
                 if (response.body() != null) {
                     repoAdapter.setRepos(response.body().items);
-                    repositories = response.body().items;
                 }
             }
 
