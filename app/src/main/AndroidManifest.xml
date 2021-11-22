@@ -12,7 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DocumentsAPI">
         <activity
-            android:name=".ui.main.DetailActivity"
+            android:name=".ui.search.SearchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.detail.DetailActivity"
             android:exported="false" />
         <activity
             android:name=".ui.splash.SplashActivity"
@@ -27,7 +30,7 @@
         </activity>
         <activity
             android:name=".ui.main.MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>

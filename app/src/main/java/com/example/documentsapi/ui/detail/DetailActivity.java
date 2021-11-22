@@ -1,4 +1,4 @@
-package com.example.documentsapi.ui.main;
+package com.example.documentsapi.ui.detail;
 
 import androidx.appcompat.app.AppCompatActivity;
 

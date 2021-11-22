@@ -3,12 +3,9 @@ package com.example.documentsapi.ui.main;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,11 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.documentsapi.R;
 import com.example.documentsapi.model.Repository;
+import com.example.documentsapi.ui.detail.DetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.ViewHolder>{
     List<Repository> repos;
@@ -81,9 +78,6 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Vi
         notifyDataSetChanged();
     }
 
-    public interface repositoryAdapterListener {
-        void onRepositorySelected(Repository repository);
-    }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -102,9 +96,5 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Vi
                 }
             });
         }
-    }
-
-    private void onRepositorySelected(List<Repository> reposFilter) {
-        Toast.makeText(context, "selected: " , Toast.LENGTH_SHORT).show();
     }
 }
