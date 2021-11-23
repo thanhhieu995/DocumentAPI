@@ -6,18 +6,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.documentsapi.R;
 import com.example.documentsapi.api.GitHubService;
 import com.example.documentsapi.api.RetrofitClient;
+import com.example.documentsapi.model.Issues;
 import com.example.documentsapi.model.Repository;
-import com.example.documentsapi.ui.main.RepositoryAdapter;
+import com.example.documentsapi.ui.main.IssuesAdapter;
 import com.example.documentsapi.ui.profile.ProfileActivity;
 import com.squareup.picasso.Picasso;
 
@@ -26,6 +25,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -33,8 +33,10 @@ public class DetailActivity extends AppCompatActivity {
     TextView txtDescription;
     ImageView imgLogo;
     Repository repository;
+    Issues issues;
     RecyclerView recyclerView;
-    RepositoryAdapter repositoryAdapter;
+    IssuesAdapter issuesAdapter;
+    List<Issues> issuesList;
     List<Repository> repositories;
 
     @SuppressLint("WrongViewCast")
@@ -62,30 +64,31 @@ public class DetailActivity extends AppCompatActivity {
         txtDescription.setText(repository.description);
         Picasso.get().load(repository.owner.avatar_url).into(imgLogo);
 
+        callIssuesAPI("octocat", "hello-world");
 
         recyclerView = findViewById(R.id.detail_rvListIssues);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        repositoryAdapter = new RepositoryAdapter(repositories, this);
-        recyclerView.setAdapter(repositoryAdapter);
+        issuesAdapter = new IssuesAdapter(issuesList, this);
+        recyclerView.setAdapter(issuesAdapter);
 
-        callRepositoryAPI(repository.owner.login, repository.name);
+
     }
 
-    private void callRepositoryAPI(String name, String reponame) {
-        GitHubService service = RetrofitClient.getClient().create(GitHubService.class);
+    private void callIssuesAPI(String name, String reponame) {
 
-        Call<List<Repository>> repos = service.listIssues(name, reponame);
-        repos.enqueue(new Callback<List<Repository>>() {
+        GitHubService service = RetrofitClient.getClient().create(GitHubService.class);
+        Call<List<Issues>> listCall = service.listIssues(name, reponame);
+        listCall.enqueue(new Callback<List<Issues>>() {
             @Override
-            public void onResponse(Call<List<Repository>> call, Response<List<Repository>> response) {
+            public void onResponse(Call<List<Issues>> call, Response<List<Issues>> response) {
                 if (response.body() != null) {
-                    repositoryAdapter.setRepos(response.body());
-                    repositories = response.body();
+                    issuesAdapter.setIssues(response.body());
+                    issuesList = response.body();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Repository>> call, Throwable t) {
+            public void onFailure(Call<List<Issues>> call, Throwable t) {
                 t.printStackTrace();
             }
         });

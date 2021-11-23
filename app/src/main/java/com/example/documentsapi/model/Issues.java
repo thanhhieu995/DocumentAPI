@@ -5,4 +5,5 @@ public class Issues {
     public String repository_url;
     public String node_id;
     public String title;
+    public User owner;
 }
