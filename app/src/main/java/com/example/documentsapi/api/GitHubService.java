@@ -23,4 +23,7 @@ public interface GitHubService {
 
     @GET("repos/{username}/{reponame}/issues")
     Call<List<Issues>> listIssues(@Path("username") String username, @Path("reponame") String reponame);
+
+    @GET("repos/{username}/{reponame}/issues")
+    Call<List<Issues>> listIssueComment(@Path("username") String username, @Path("reponame") String reponame);
 }
