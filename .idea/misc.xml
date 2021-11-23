@@ -10,6 +10,7 @@
         <entry key="app/src/main/res/layout/activity_search.xml" value="0.25885416666666666" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.75" />
         <entry key="app/src/main/res/layout/fragment_detail.xml" value="0.25885416666666666" />
+        <entry key="app/src/main/res/layout/item_issues.xml" value="0.25885416666666666" />
         <entry key="app/src/main/res/layout/item_repository.xml" value="0.25885416666666666" />
         <entry key="app/src/main/res/menu/search_menu.xml" value="0.25885416666666666" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.275" />
