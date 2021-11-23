@@ -39,7 +39,6 @@ public class IssuesAdapter extends RecyclerView.Adapter<IssuesAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Issues issues = issuesList.get(position);
         if (issues != null) {
-            holder.tvName.setText(issues.node_id);
             holder.tvDescription.setText(issues.title);
             Picasso.get().load(issues.user.avatar_url).into(holder.imageLogo);
         }
@@ -60,12 +59,10 @@ public class IssuesAdapter extends RecyclerView.Adapter<IssuesAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName;
         TextView tvDescription;
         ImageView imageLogo;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvName = itemView.findViewById(R.id.item_issues_name);
             tvDescription = itemView.findViewById(R.id.item_issues_description);
             imageLogo = itemView.findViewById(R.id.item_Issues_imgLogo);
         }
