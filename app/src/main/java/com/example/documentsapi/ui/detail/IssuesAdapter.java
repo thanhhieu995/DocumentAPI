@@ -1,4 +1,4 @@
-package com.example.documentsapi.ui.main;
+package com.example.documentsapi.ui.detail;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.documentsapi.R;
 import com.example.documentsapi.model.Issues;
-import com.example.documentsapi.model.Repository;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

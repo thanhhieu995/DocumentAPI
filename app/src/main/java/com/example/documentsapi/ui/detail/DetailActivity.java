@@ -16,7 +16,6 @@ import com.example.documentsapi.api.GitHubService;
 import com.example.documentsapi.api.RetrofitClient;
 import com.example.documentsapi.model.Issues;
 import com.example.documentsapi.model.Repository;
-import com.example.documentsapi.ui.main.IssuesAdapter;
 import com.example.documentsapi.ui.profile.ProfileActivity;
 import com.squareup.picasso.Picasso;
 
@@ -25,7 +24,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -64,7 +62,7 @@ public class DetailActivity extends AppCompatActivity {
         txtDescription.setText(repository.description);
         Picasso.get().load(repository.owner.avatar_url).into(imgLogo);
 
-        callIssuesAPI("octocat", "hello-world");
+        callIssuesAPI(repository.owner.login, repository.name);
 
         recyclerView = findViewById(R.id.detail_rvListIssues);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
