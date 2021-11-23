@@ -42,7 +42,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<IssuesAdapter.ViewHolder
         if (issues != null) {
             holder.tvName.setText(issues.node_id);
             holder.tvDescription.setText(issues.title);
-            Picasso.get().load(issues.owner.avatar_url).into(holder.imageLogo);
+            Picasso.get().load(issues.user.avatar_url).into(holder.imageLogo);
         }
 
     }
