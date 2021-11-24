@@ -55,8 +55,8 @@ public class DetailIssuesActivity extends AppCompatActivity {
         tvDescription.setText(issues.title);
         Picasso.get().load(issues.user.avatar_url).into(imgLogo);
 
-        //callIssuesDetailAPI(repository.owner.login, repository.name, issues.number);
-        callIssuesDetailAPI("octocat", "hello-world", 42);
+        callIssuesDetailAPI(repository.owner.login, repository.name, issues.number);
+        //callIssuesDetailAPI("octocat", "hello-world", 42);
     }
 
     private void callIssuesDetailAPI(String owner, String repo, int issues_numner) {
