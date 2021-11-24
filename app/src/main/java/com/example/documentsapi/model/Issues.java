@@ -1,6 +1,8 @@
 package com.example.documentsapi.model;
 
-public class Issues {
+import java.io.Serializable;
+
+public class Issues implements Serializable {
     public String url;
     public String repository_url;
     public String node_id;
