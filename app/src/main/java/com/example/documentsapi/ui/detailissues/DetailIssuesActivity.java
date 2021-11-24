@@ -1,6 +1,7 @@
 package com.example.documentsapi.ui.detailissues;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -30,6 +31,8 @@ public class DetailIssuesActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     Issues issues;
     Repository repository;
+    DetailIssuesAdapter detailIssuesAdapter;
+    List<IssuesComment> issuesCommentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,10 @@ public class DetailIssuesActivity extends AppCompatActivity {
         imgLogo = findViewById(R.id.detail_issues_imgLogo);
         recyclerView = findViewById(R.id.detail_issues_recyclerview);
 
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        detailIssuesAdapter = new DetailIssuesAdapter(issuesCommentList, this);
+        recyclerView.setAdapter(detailIssuesAdapter);
+
         Bundle bundle = getIntent().getExtras();
         issues = (Issues) bundle.getSerializable("issues");
         repository = (Repository) bundle.getSerializable("repository");
@@ -48,7 +55,8 @@ public class DetailIssuesActivity extends AppCompatActivity {
         tvDescription.setText(issues.title);
         Picasso.get().load(issues.user.avatar_url).into(imgLogo);
 
-        callIssuesDetailAPI(repository.owner.login, repository.name, issues.number);
+        //callIssuesDetailAPI(repository.owner.login, repository.name, issues.number);
+        callIssuesDetailAPI("octocat", "hello-world", 42);
     }
 
     private void callIssuesDetailAPI(String owner, String repo, int issues_numner) {
@@ -59,7 +67,8 @@ public class DetailIssuesActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<IssuesComment>> call, Response<List<IssuesComment>> response) {
                 if (response.body() != null) {
-
+                    detailIssuesAdapter.setDetailIssues(response.body());
+                    issuesCommentList = response.body();
                 }
             }
 

@@ -53,6 +53,11 @@ public class DetailIssuesAdapter extends RecyclerView.Adapter<DetailIssuesAdapte
         return 0;
     }
 
+    public void setDetailIssues(List<IssuesComment> body) {
+        this.issuesCommentList = body;
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName;
         ImageView imgLogo;
