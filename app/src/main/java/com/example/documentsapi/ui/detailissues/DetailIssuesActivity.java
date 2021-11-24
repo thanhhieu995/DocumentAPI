@@ -12,11 +12,14 @@ import com.example.documentsapi.api.GitHubService;
 import com.example.documentsapi.api.RetrofitClient;
 import com.example.documentsapi.model.Issues;
 import com.example.documentsapi.model.IssuesComment;
+import com.example.documentsapi.model.Repository;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class DetailIssuesActivity extends AppCompatActivity {
@@ -26,6 +29,7 @@ public class DetailIssuesActivity extends AppCompatActivity {
     ImageView imgLogo;
     RecyclerView recyclerView;
     Issues issues;
+    Repository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +43,30 @@ public class DetailIssuesActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         issues = (Issues) bundle.getSerializable("issues");
+        repository = (Repository) bundle.getSerializable("repository");
         tvName.setText(issues.user.login);
         tvDescription.setText(issues.title);
         Picasso.get().load(issues.user.avatar_url).into(imgLogo);
 
-        callIssuesDetailAPI();
+        callIssuesDetailAPI(repository.owner.login, repository.name, issues.number);
     }
 
-    private void callIssuesDetailAPI(String owner, String repo, Stirng) {
+    private void callIssuesDetailAPI(String owner, String repo, int issues_numner) {
 
         GitHubService service = RetrofitClient.getClient().create(GitHubService.class);
-        Call<List<IssuesComment>> listCall = service.listIssueComment()
+        Call<List<IssuesComment>> listCall = service.listIssueComment(owner, repo, issues_numner);
+        listCall.enqueue(new Callback<List<IssuesComment>>() {
+            @Override
+            public void onResponse(Call<List<IssuesComment>> call, Response<List<IssuesComment>> response) {
+                if (response.body() != null) {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<IssuesComment>> call, Throwable t) {
+
+            }
+        });
     }
 }

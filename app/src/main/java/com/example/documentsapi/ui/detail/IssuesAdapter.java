@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.documentsapi.R;
 import com.example.documentsapi.model.Issues;
+import com.example.documentsapi.model.Repository;
 import com.example.documentsapi.ui.detailissues.DetailIssuesActivity;
 import com.squareup.picasso.Picasso;
 
@@ -22,10 +23,12 @@ public class IssuesAdapter extends RecyclerView.Adapter<IssuesAdapter.ViewHolder
 
     List<Issues> issuesList;
     Context context;
+    Repository repository;
 
-    public IssuesAdapter(List<Issues> issues, Context context) {
-        this.issuesList = issues;
+    public IssuesAdapter(List<Issues> issuesList, Context context, Repository repository) {
+        this.issuesList = issuesList;
         this.context = context;
+        this.repository = repository;
     }
 
     @NonNull
@@ -49,6 +52,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<IssuesAdapter.ViewHolder
                 public void onClick(View v) {
                     Intent intent = new Intent(context, DetailIssuesActivity.class);
                     intent.putExtra("issues", issues);
+                    intent.putExtra("repository", repository);
                     context.startActivity(intent);
                 }
             });
