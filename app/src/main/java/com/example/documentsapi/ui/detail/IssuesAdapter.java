@@ -1,6 +1,7 @@
 package com.example.documentsapi.ui.detail;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.documentsapi.R;
 import com.example.documentsapi.model.Issues;
+import com.example.documentsapi.model.Repository;
+import com.example.documentsapi.ui.detailissues.DetailIssuesActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -20,10 +23,12 @@ public class IssuesAdapter extends RecyclerView.Adapter<IssuesAdapter.ViewHolder
 
     List<Issues> issuesList;
     Context context;
+    Repository repository;
 
-    public IssuesAdapter(List<Issues> issues, Context context) {
-        this.issuesList = issues;
+    public IssuesAdapter(List<Issues> issuesList, Context context, Repository repository) {
+        this.issuesList = issuesList;
         this.context = context;
+        this.repository = repository;
     }
 
     @NonNull
@@ -41,6 +46,16 @@ public class IssuesAdapter extends RecyclerView.Adapter<IssuesAdapter.ViewHolder
         if (issues != null) {
             holder.tvDescription.setText(issues.title);
             Picasso.get().load(issues.user.avatar_url).into(holder.imageLogo);
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, DetailIssuesActivity.class);
+                    intent.putExtra("issues", issues);
+                    intent.putExtra("repository", repository);
+                    context.startActivity(intent);
+                }
+            });
         }
 
     }

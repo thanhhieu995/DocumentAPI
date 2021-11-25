@@ -1,6 +1,7 @@
 package com.example.documentsapi.api;
 
 import com.example.documentsapi.model.Issues;
+import com.example.documentsapi.model.IssuesComment;
 import com.example.documentsapi.model.Repository;
 import com.example.documentsapi.model.SearchResponse;
 
@@ -23,4 +24,7 @@ public interface GitHubService {
 
     @GET("repos/{username}/{reponame}/issues")
     Call<List<Issues>> listIssues(@Path("username") String username, @Path("reponame") String reponame);
+
+    @GET("repos/{owner}/{repo}/issues/{issues_number}/comments")
+    Call<List<IssuesComment>> listIssueComment(@Path("owner") String owner, @Path("repo") String repo, @Path("issues_number") int issues_number);
 }

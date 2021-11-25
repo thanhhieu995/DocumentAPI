@@ -66,7 +66,7 @@ public class DetailActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.detail_rvListIssues);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        issuesAdapter = new IssuesAdapter(issuesList, this);
+        issuesAdapter = new IssuesAdapter(issuesList, this, repository);
         recyclerView.setAdapter(issuesAdapter);
 
 
