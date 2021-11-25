@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="@+id/repository_tvName"
         app:layout_constraintTop_toBottomOf="@+id/repository_tvName" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/repository_imgUser"
         android:layout_width="64dp"
         android:layout_height="64dp"
