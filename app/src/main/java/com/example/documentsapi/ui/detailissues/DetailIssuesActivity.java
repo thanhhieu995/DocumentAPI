@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +16,7 @@ import com.example.documentsapi.api.RetrofitClient;
 import com.example.documentsapi.model.Issues;
 import com.example.documentsapi.model.IssuesComment;
 import com.example.documentsapi.model.Repository;
+import com.example.documentsapi.ui.profile.ProfileActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
