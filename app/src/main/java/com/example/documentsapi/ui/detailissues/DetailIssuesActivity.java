@@ -39,11 +39,12 @@ public class DetailIssuesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_issues);
 
+
+
         tvName = findViewById(R.id.detail_issues_tvName);
         tvDescription = findViewById(R.id.detail_issues_tvDescription);
         imgLogo = findViewById(R.id.detail_issues_imgLogo);
         recyclerView = findViewById(R.id.detail_issues_recyclerview);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         detailIssuesAdapter = new DetailIssuesAdapter(issuesCommentList, this);
         recyclerView.setAdapter(detailIssuesAdapter);
@@ -56,6 +57,7 @@ public class DetailIssuesActivity extends AppCompatActivity {
         Picasso.get().load(issues.user.avatar_url).into(imgLogo);
 
         callIssuesDetailAPI(repository.owner.login, repository.name, issues.number);
+
         //callIssuesDetailAPI("octocat", "hello-world", 42);
     }
 

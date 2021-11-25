@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.documentsapi.R;
+import com.example.documentsapi.model.Issues;
 import com.example.documentsapi.model.IssuesComment;
 import com.squareup.picasso.Picasso;
 
@@ -31,7 +32,7 @@ public class DetailIssuesAdapter extends RecyclerView.Adapter<DetailIssuesAdapte
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.activity_detail_issues, parent, false);
+        View view = layoutInflater.inflate(R.layout.item_detailissues, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -40,8 +41,8 @@ public class DetailIssuesAdapter extends RecyclerView.Adapter<DetailIssuesAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         IssuesComment issuesComment = issuesCommentList.get(position);
         if (issuesComment != null) {
-            holder.tvName.setText(issuesComment.node_id);
-            Picasso.get().load(issuesComment.owner.avatar_url).into(holder.imgLogo);
+            holder.tvName.setText(issuesComment.body);
+            Picasso.get().load(issuesComment.user.avatar_url).into(holder.imgLogo);
         }
     }
 
