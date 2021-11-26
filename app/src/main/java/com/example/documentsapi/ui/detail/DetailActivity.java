@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -70,6 +71,37 @@ public class DetailActivity extends AppCompatActivity {
         recyclerView.setAdapter(issuesAdapter);
 
 
+        Log.d("Hieu", "onCreate");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("Hieu", "onStart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("Hieu", "onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("Hieu", "onPause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("Hieu", "onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("Hieu", "onDestroy");
     }
 
     private void callIssuesAPI(String name, String reponame) {
@@ -83,6 +115,7 @@ public class DetailActivity extends AppCompatActivity {
                     issuesAdapter.setIssues(response.body());
                     issuesList = response.body();
                 }
+                Log.d("Hieu", "onResponse call Issue Api");
             }
 
             @Override
@@ -90,5 +123,6 @@ public class DetailActivity extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
+        Log.d("Hieu", "After call Issue Api");
     }
 }
