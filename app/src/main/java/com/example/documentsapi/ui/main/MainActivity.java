@@ -2,11 +2,13 @@ package com.example.documentsapi.ui.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -88,45 +90,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    public boolean onCreateOptionsMenu (Menu menu) {
-//        MenuInflater menuInflater = getMenuInflater();
-//        menuInflater.inflate(R.menu.search_menu, menu);
-//        MenuItem searchItem = menu.findItem(R.id.actionSearch);
+    public boolean onCreateOptionsMenu (Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.search_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.actionSearch);
 //        SearchView searchView = (SearchView) searchItem.getActionView();
-//        searchItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem item) {
-//                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-//                startActivity(intent);
-//                return false;
-//            }
-//        });
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                filter(newText);
-//                return false;
-//            }
-//        });
-//        return true;
-//    }
-//
-//    private void filter(String newText) {
-//        ArrayList<Repository> filteredList = new ArrayList<>();
-//        for (Repository repository : repositories) {
-//            if (repository.full_name.toLowerCase(Locale.ROOT).contains(newText.toLowerCase(Locale.ROOT))) {
-//                filteredList.add(repository);
-//            }
-//        }
-//        if (filteredList.isEmpty()) {
-//            Toast.makeText(this, "NO Data Found...", Toast.LENGTH_SHORT).show();
-//        } else {
-//            repoAdapter.filterList(filteredList);
-//        }
-//    }
+        searchItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+                return false;
+            }
+        });
+        return true;
+    }
 }
