@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.documentsapi.R;
 import com.example.documentsapi.api.GitHubService;
 import com.example.documentsapi.api.RetrofitClient;
+import com.example.documentsapi.listener.EndlessRecyclerViewScrollListener;
 import com.example.documentsapi.model.Repository;
 import com.example.documentsapi.model.SearchResponse;
 import com.example.documentsapi.ui.main.RepositoryAdapter;
@@ -36,6 +37,7 @@ public class SearchActivity extends AppCompatActivity {
     RepositoryAdapter repoAdapter;
     SearchView searchView;
     RecyclerView recyclerView;
+    private EndlessRecyclerViewScrollListener scrollListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +47,26 @@ public class SearchActivity extends AppCompatActivity {
         searchView = findViewById(R.id.searchView);
         recyclerView = findViewById(R.id.rv_recylerView_Search);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
         repoAdapter = new RepositoryAdapter(null, this);
         recyclerView.setAdapter(repoAdapter);
 
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                callRepositoryApi(searchView.getQuery().toString(), page + 1);
+            }
+        };
+        recyclerView.addOnScrollListener(scrollListener);
+
+        searchView.setIconified(false);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                callRepositoryApi(query);
+                repoAdapter.clearData();
+                scrollListener.resetState();
+                callRepositoryApi(query, 1);
                 return false;
             }
 
@@ -65,16 +79,21 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
-    private void callRepositoryApi(String keyword) {
+    private void callRepositoryApi(String keyword, int page) {
         GitHubService service = RetrofitClient.getClient().create(GitHubService.class);
 
-        Call<SearchResponse> repos = service.searchRepository(keyword);
+        Call<SearchResponse> repos = service.searchRepository(keyword, page, 10);
 
         repos.enqueue(new Callback<SearchResponse>() {
             @Override
             public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
                 if (response.body() != null) {
-                    repoAdapter.setRepos(response.body().items);
+                    List<Repository> repoList = response.body().items;
+                    if (page == 1) {
+                        repoAdapter.setRepos(repoList);
+                    } else {
+                        repoAdapter.addRepos(repoList);
+                    }
                 }
             }
 

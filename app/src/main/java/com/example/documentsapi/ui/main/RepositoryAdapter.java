@@ -79,7 +79,19 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Vi
         notifyDataSetChanged();
     }
 
+    public void addRepos(List<Repository> repos) {
+        if (this.repos != null) {
+            this.repos.addAll(repos);
+        } else {
+            this.repos = repos;
+        }
+        notifyDataSetChanged();
+    }
 
+    public void clearData() {
+        this.repos = null;
+        notifyDataSetChanged();
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvDescription;

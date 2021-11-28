@@ -17,7 +17,7 @@ public interface GitHubService {
     Call<List<Repository>> listRepos();
 
     @GET("search/repositories")
-    Call<SearchResponse> searchRepository(@Query("q") String keyword);
+    Call<SearchResponse> searchRepository(@Query("q") String keyword, @Query("page") int page, @Query("per_page") int perPage);
 
     @GET("orgs/{username}/repos")
     Call<List<Repository>> listUserRepos(@Path("username") String username);
