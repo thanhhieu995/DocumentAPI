@@ -56,16 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
         callRepositoryApi();
 
-        btnSearch = findViewById(R.id.btnSearch);
-        btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                intent.putExtra("repository", (Parcelable) repository);
-                startActivity(intent);
-            }
-        });
-
     }
 
     private void callRepositoryApi() {
