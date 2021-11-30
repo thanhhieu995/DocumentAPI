@@ -3,6 +3,7 @@ package com.example.documentsapi.ui.search;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.util.Log;
@@ -37,6 +38,7 @@ public class SearchActivity extends AppCompatActivity {
     RepositoryAdapter repoAdapter;
     SearchView searchView;
     RecyclerView recyclerView;
+    SwipeRefreshLayout refreshLayout;
     private EndlessRecyclerViewScrollListener scrollListener;
 
     @Override
@@ -46,6 +48,7 @@ public class SearchActivity extends AppCompatActivity {
 
         searchView = findViewById(R.id.searchView);
         recyclerView = findViewById(R.id.rv_recylerView_Search);
+        refreshLayout = findViewById(R.id.search_srlRefresh);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -59,6 +62,14 @@ public class SearchActivity extends AppCompatActivity {
             }
         };
         recyclerView.addOnScrollListener(scrollListener);
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                repoAdapter.clearData();
+                callRepositoryApi(searchView.getQuery().toString(), 1);
+            }
+        });
 
         searchView.setIconified(false);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -91,6 +102,7 @@ public class SearchActivity extends AppCompatActivity {
                     List<Repository> repoList = response.body().items;
                     if (page == 1) {
                         repoAdapter.setRepos(repoList);
+                        refreshLayout.setRefreshing(false);
                     } else {
                         repoAdapter.addRepos(repoList);
                     }
