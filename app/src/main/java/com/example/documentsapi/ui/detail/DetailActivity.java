@@ -69,7 +69,7 @@ public class DetailActivity extends AppCompatActivity {
         txtDescription.setText(repository.description);
         Picasso.get().load(repository.owner.avatar_url).into(imgLogo);
 
-        callIssuesAPI(repository.owner.login, repository.name);
+        callIssuesAPI(repository.owner.login, repository.name, 1);
 
         recyclerView = findViewById(R.id.detail_rvListIssues);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -81,7 +81,7 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 issuesAdapter.clearData();
-                callIssuesAPI(repository.owner.login, repository.name);
+                callIssuesAPI(repository.owner.login, repository.name, 1);
             }
         });
 
@@ -89,7 +89,7 @@ public class DetailActivity extends AppCompatActivity {
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-//                callIssuesAPI();
+                //callIssuesAPI();
             }
         };
 
@@ -126,10 +126,10 @@ public class DetailActivity extends AppCompatActivity {
         Log.d("Hieu", "onDestroy");
     }
 
-    private void callIssuesAPI(String name, String reponame) {
+    private void callIssuesAPI(String name, String reponame, int page) {
 
         GitHubService service = RetrofitClient.getClient().create(GitHubService.class);
-        Call<List<Issues>> listCall = service.listIssues(name, reponame);
+        Call<List<Issues>> listCall = service.listIssuesEndScroll(name, reponame, page, 10);
         listCall.enqueue(new Callback<List<Issues>>() {
             @Override
             public void onResponse(Call<List<Issues>> call, Response<List<Issues>> response) {
