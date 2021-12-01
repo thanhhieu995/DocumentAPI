@@ -1,6 +1,7 @@
 package com.example.documentsapi.ui.detail;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -71,7 +72,8 @@ public class DetailActivity extends AppCompatActivity {
         callIssuesAPI(repository.owner.login, repository.name);
 
         recyclerView = findViewById(R.id.detail_rvListIssues);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
         issuesAdapter = new IssuesAdapter(issuesList, this, repository);
         recyclerView.setAdapter(issuesAdapter);
 
@@ -83,6 +85,13 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+//                callIssuesAPI();
+            }
+        };
 
         Log.d("Hieu", "onCreate");
     }
