@@ -34,12 +34,18 @@
         app:layout_constraintStart_toEndOf="@+id/detail_imgLogo"
         app:layout_constraintTop_toBottomOf="@+id/detail_txtfullName" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/detail_rvListIssues"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/detail_swiperefreshlayout"
         android:layout_width="409dp"
         android:layout_height="501dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detail_imgLogo" />
+        app:layout_constraintTop_toBottomOf="@+id/detail_imgLogo">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/detail_rvListIssues"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

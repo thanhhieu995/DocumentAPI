@@ -3,6 +3,7 @@ package com.example.documentsapi.ui.detail;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.example.documentsapi.R;
 import com.example.documentsapi.api.GitHubService;
 import com.example.documentsapi.api.RetrofitClient;
+import com.example.documentsapi.listener.EndlessRecyclerViewScrollListener;
 import com.example.documentsapi.model.Issues;
 import com.example.documentsapi.model.Repository;
 import com.example.documentsapi.ui.profile.ProfileActivity;
@@ -37,6 +39,8 @@ public class DetailActivity extends AppCompatActivity {
     IssuesAdapter issuesAdapter;
     List<Issues> issuesList;
     List<Repository> repositories;
+    SwipeRefreshLayout swipeRefreshLayout;
+    private EndlessRecyclerViewScrollListener scrollListener;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -47,6 +51,7 @@ public class DetailActivity extends AppCompatActivity {
         txtName = findViewById(R.id.detail_txtfullName);
         txtDescription = findViewById(R.id.detail_txtDescription);
         imgLogo = findViewById(R.id.detail_imgLogo);
+        swipeRefreshLayout = findViewById(R.id.detail_swiperefreshlayout);
         imgLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +74,14 @@ public class DetailActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         issuesAdapter = new IssuesAdapter(issuesList, this, repository);
         recyclerView.setAdapter(issuesAdapter);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                issuesAdapter.clearData();
+                callIssuesAPI(repository.owner.login, repository.name);
+            }
+        });
 
 
         Log.d("Hieu", "onCreate");
@@ -112,6 +125,7 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Issues>> call, Response<List<Issues>> response) {
                 if (response.body() != null) {
+                    swipeRefreshLayout.setRefreshing(false);
                     issuesAdapter.setIssues(response.body());
                     issuesList = response.body();
                 }
