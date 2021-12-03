@@ -17,6 +17,9 @@ public interface GitHubService {
     @GET("repositories")
     Call<List<Repository>> listRepos();
 
+    @GET("repositories")
+    Call<List<Repository>> listReposEndScroll(@Query("since") Integer integer);
+
     @GET("search/repositories")
     Call<SearchResponse> searchRepository(@Query("q") String keyword, @Query("page") int page, @Query("per_page") int perPage);
 
