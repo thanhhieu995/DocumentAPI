@@ -78,6 +78,15 @@ public class IssuesAdapter extends RecyclerView.Adapter<IssuesAdapter.ViewHolder
         notifyDataSetChanged();
     }
 
+    public void addIssues(List<Issues> body) {
+        if (this.issuesList != null) {
+            issuesList.addAll(body);
+        } else {
+            this.issuesList = body;
+        }
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvDescription;
         ImageView imageLogo;

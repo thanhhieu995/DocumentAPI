@@ -34,13 +34,16 @@ public class DetailActivity extends AppCompatActivity {
     TextView txtName;
     TextView txtDescription;
     ImageView imgLogo;
+    RecyclerView recyclerView;
+    SwipeRefreshLayout swipeRefreshLayout;
+
+    IssuesAdapter issuesAdapter;
+
     Repository repository;
     Issues issues;
-    RecyclerView recyclerView;
-    IssuesAdapter issuesAdapter;
     List<Issues> issuesList;
     List<Repository> repositories;
-    SwipeRefreshLayout swipeRefreshLayout;
+
     private EndlessRecyclerViewScrollListener scrollListener;
 
     @SuppressLint("WrongViewCast")
@@ -89,9 +92,11 @@ public class DetailActivity extends AppCompatActivity {
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                //callIssuesAPI();
+                callIssuesAPI(repository.owner.login, repository.name, page + 1);
             }
         };
+
+        recyclerView.addOnScrollListener(scrollListener);
 
         Log.d("Hieu", "onCreate");
     }
@@ -134,9 +139,13 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Issues>> call, Response<List<Issues>> response) {
                 if (response.body() != null) {
-                    swipeRefreshLayout.setRefreshing(false);
-                    issuesAdapter.setIssues(response.body());
-                    issuesList = response.body();
+                    if (page == 1) {
+                        swipeRefreshLayout.setRefreshing(false);
+                        issuesAdapter.setIssues(response.body());
+                        issuesList = response.body();
+                    } else {
+                        issuesAdapter.addIssues(response.body());
+                    }
                 }
                 Log.d("Hieu", "onResponse call Issue Api");
             }
