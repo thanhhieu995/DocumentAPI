@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         rvRepository = findViewById(R.id.main_rvRepository);
-        rvRepository.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        rvRepository.setLayoutManager(layoutManager);
         repoAdapter = new RepositoryAdapter(repositories, this);
         rvRepository.setAdapter(repoAdapter);
 
@@ -76,6 +77,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                callRepositoryApi(repoAdapter.largestId());
+            }
+        };
+
+        rvRepository.addOnScrollListener(scrollListener);
     }
 
     private void callRepositoryApi(int since) {
@@ -87,9 +97,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Repository>> call, Response<List<Repository>> response) {
                 if (response.body() != null) {
-                    repoAdapter.setRepos(response.body());
-                    repositories = response.body();
-                    swipeRefreshLayout.setRefreshing(false);
+                    if (since == 1) {
+                        repoAdapter.setRepos(response.body());
+                        repositories = response.body();
+                        swipeRefreshLayout.setRefreshing(false);
+                    } else {
+                        repoAdapter.addRepos(response.body());
+                    }
                 }
             }
 

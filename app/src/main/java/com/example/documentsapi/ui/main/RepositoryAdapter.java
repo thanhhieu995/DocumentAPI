@@ -93,6 +93,25 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Vi
         notifyDataSetChanged();
     }
 
+    public int largestId() {
+        int maxId = 0;
+        if (repos != null) {
+            for (int i = 0; i < repos.size(); i++) {
+                if (repos.get(i).id > maxId) {
+                    maxId = repos.get(i).id;
+                }
+            }
+        }
+        return maxId;
+//        if (repos != null && repos.size() > 0) {
+//            Repository repo = repos.get(repos.size() -1);
+//            if (repo != null) {
+//                return repo.id;
+//            }
+//        }
+//        return 0;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvDescription;
         ImageView imgUser;
