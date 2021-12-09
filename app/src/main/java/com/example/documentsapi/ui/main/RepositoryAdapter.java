@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,15 +17,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.documentsapi.R;
 import com.example.documentsapi.model.Repository;
 import com.example.documentsapi.ui.detail.DetailActivity;
-import com.example.documentsapi.ui.profile.ProfileActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.ViewHolder>{
+public class RepositoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     List<Repository> repos;
     Context context;
+
+    private final int VIEW_TYPE_ITEM = 0;
+    private final int VIEW_TYPE_LOADING = 1;
 
     public RepositoryAdapter(List<Repository> repos, Context context) {
         this.repos = repos;
@@ -39,30 +42,41 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Vi
 
     @NonNull
     @Override
-    public RepositoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.item_repository, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+    public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == VIEW_TYPE_ITEM) {
+            LayoutInflater layoutInflater = LayoutInflater.from(context);
+            View view = layoutInflater.inflate(R.layout.item_repository, parent, false);
+            ItemViewHolder viewHolder = new ItemViewHolder(view);
+            return viewHolder;
+        } else {
+            LayoutInflater layoutInflater = LayoutInflater.from(context);
+            View view = layoutInflater.inflate(R.layout.item_loading, parent, false);
+            ItemViewHolder viewHolder = new ItemViewHolder(view);
+            return viewHolder;
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RepositoryAdapter.ViewHolder holder, int position) {
-        Repository repository = repos.get(position);
-        if (repository != null) {
-            holder.tvName.setText(repository.full_name);
-            holder.tvDescription.setText(repository.description);
-            Picasso.get().load(repository.owner.avatar_url).into(holder.imgUser);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof ItemViewHolder) {
+            Repository repository = repos.get(position);
+            if (repository != null) {
+                ((ItemViewHolder) holder).tvName.setText(repository.full_name);
+                ((ItemViewHolder) holder).tvDescription.setText(repository.description);
+                Picasso.get().load(repository.owner.avatar_url).into(((ItemViewHolder) holder).imgUser);
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, "><><><><", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(context, DetailActivity.class);
-                    intent.putExtra("repository",  repository);
-                    context.startActivity(intent);
-                }
-            });
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "><><><><", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(context, DetailActivity.class);
+                        intent.putExtra("repository", repository);
+                        context.startActivity(intent);
+                    }
+                });
+            }
+        } else if (holder instanceof LoadingViewHolder) {
+            showLoadingView((LoadingViewHolder) holder, position);
         }
     }
 
@@ -112,10 +126,10 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Vi
 //        return 0;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvDescription;
         ImageView imgUser;
-        public ViewHolder(@NonNull View itemView) {
+        public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.repository_tvName);
             tvDescription = itemView.findViewById(R.id.repository_tvDescription);
@@ -128,5 +142,33 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Vi
                 }
             });
         }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return repos.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+    }
+
+    public static class LoadingViewHolder extends RecyclerView.ViewHolder {
+
+        ProgressBar progressBar;
+
+        public LoadingViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            progressBar = itemView.findViewById(R.id.progressBar);
+        }
+    }
+
+    private void showLoadingView(LoadingViewHolder viewHolder, int position) {
+        Repository repository = repos.get(position);
+        //viewHolder.progressBar
+    }
+
+    private void populateItemRows(ItemViewHolder viewHolder, int position) {
+        Repository repository = repos.get(position);
+        viewHolder.tvName.setText(repository.full_name);
+        viewHolder.tvDescription.setText(repository.description);
+        Picasso.get().load(repository.owner.avatar_url).into(viewHolder.imgUser);
     }
 }

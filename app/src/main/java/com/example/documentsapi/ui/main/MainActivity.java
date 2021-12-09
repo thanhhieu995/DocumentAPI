@@ -1,5 +1,6 @@
 package com.example.documentsapi.ui.main;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.MenuItemCompat;
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -50,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
 
     private EndlessRecyclerViewScrollListener scrollListener;
 
+    boolean isLoading = false;
+
+    @SuppressLint("NonConstantResourceId")
     @BindView(R.id.main_refreshlayout)
     SwipeRefreshLayout swipeRefreshLayout;
 
@@ -86,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
         };
 
         rvRepository.addOnScrollListener(scrollListener);
+
+        initScrollListener();
     }
 
     private void callRepositoryApi(int since) {
@@ -130,5 +137,54 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         return true;
+    }
+
+    private void initScrollListener() {
+        rvRepository.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                LinearLayoutManager layoutManager = (LinearLayoutManager) rvRepository.getLayoutManager();
+                if (!isLoading) {
+                    if (layoutManager != null && layoutManager.findLastCompletelyVisibleItemPosition() == repositories.size() - 1) {
+                        loadMore();
+                        isLoading = true;
+                    }
+                }
+            }
+        });
+    }
+
+    private void loadMore() {
+        repositories.add(null);
+
+        repoAdapter.notifyItemInserted(repositories.size() -1);
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void run() {
+                repositories.remove(repositories.size() - 1);
+                int scrollPosition = repositories.size();
+
+                repoAdapter.notifyItemRemoved(scrollPosition);
+                int currentSize = scrollPosition;
+                int nextLimit = currentSize + 10;
+
+//                while (currentSize - 1 < nextLimit) {
+//                    repositories.add(currentSize)
+//                }
+
+                repoAdapter.notifyDataSetChanged();
+                isLoading = false;
+            }
+        }, 2000 );
     }
 }
