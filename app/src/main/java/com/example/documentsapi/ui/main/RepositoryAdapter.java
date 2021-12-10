@@ -42,7 +42,7 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @NonNull
     @Override
-    public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_ITEM) {
             LayoutInflater layoutInflater = LayoutInflater.from(context);
             View view = layoutInflater.inflate(R.layout.item_repository, parent, false);
@@ -51,7 +51,7 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         } else {
             LayoutInflater layoutInflater = LayoutInflater.from(context);
             View view = layoutInflater.inflate(R.layout.item_loading, parent, false);
-            ItemViewHolder viewHolder = new ItemViewHolder(view);
+            LoadingViewHolder viewHolder = new LoadingViewHolder(view);
             return viewHolder;
         }
     }
@@ -83,7 +83,7 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public int getItemCount() {
         if (repos != null) {
-            return repos.size();
+            return repos.size() + 1;
         }
         return 0;
     }
@@ -148,7 +148,12 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemViewType(int position) {
-        return repos.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+        //return repos.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+        if (position >= repos.size()) {
+            return VIEW_TYPE_LOADING;
+        } else {
+            return VIEW_TYPE_ITEM;
+        }
     }
 
     public static class LoadingViewHolder extends RecyclerView.ViewHolder {
@@ -163,7 +168,7 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     private void showLoadingView(LoadingViewHolder viewHolder, int position) {
-        Repository repository = repos.get(position);
+//        Repository repository = repos.get(position);
         //viewHolder.progressBar
     }
 

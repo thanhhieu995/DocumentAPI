@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
         rvRepository.addOnScrollListener(scrollListener);
 
-        initScrollListener();
+        //initScrollListener();
     }
 
     private void callRepositoryApi(int since) {
