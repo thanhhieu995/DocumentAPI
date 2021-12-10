@@ -111,8 +111,10 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         int maxId = 0;
         if (repos != null) {
             for (int i = 0; i < repos.size(); i++) {
-                if (repos.get(i).id > maxId) {
-                    maxId = repos.get(i).id;
+                if (repos.get(i) != null) {
+                    if (repos.get(i).id > maxId) {
+                        maxId = repos.get(i).id;
+                    }
                 }
             }
         }

@@ -138,6 +138,11 @@ public class MainActivity extends AppCompatActivity {
         });
         return true;
     }
+    
+    private void initAdapter() {
+        repoAdapter = new RepositoryAdapter(repositories, this);
+        rvRepository.setAdapter(repoAdapter);
+    }
 
     private void initScrollListener() {
         rvRepository.addOnScrollListener(new RecyclerView.OnScrollListener() {
